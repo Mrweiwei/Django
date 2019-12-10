@@ -1,2 +1,2 @@
 # Django
-Develop web by Django
+Develop web by Django2.0
