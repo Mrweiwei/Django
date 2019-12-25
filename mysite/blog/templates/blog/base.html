@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+    <title>{% block title %} {% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog.css' %}">
+    <!-- 页面css start -->
+        {% block link %}
+        {% endblock link %}
+    <!-- 页面css end -->
+</head>
+<body style="background-image: url({% static 'images/bg.jpg' %});
+    background-size: 100%;background-repeat: srepeat;
+">
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sidebar">
+                <h2>博客列表</h2>
+                    {% for post in posts %}
+                        <p>{{ post.title }}</p>
+
+                    {% endfor %}
+    </div>
+</body>
+</html>
+

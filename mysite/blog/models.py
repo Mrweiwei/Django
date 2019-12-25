@@ -1,8 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 # Create your models here.
+#添加定制管理器
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager,self).get_queryset().filter(status='published')
 #博客定义数据模型（模型表示一个Python类，并定义为django.db.models.Model的子类。其中每个属性视为一个数据库
 # 的字段。Django针对定义于models.py文件中的每个模型创建一个表。当创建一个模型时，Django提供一个实用的API
 # 从而可方便地查询数据库中的对象。首先定义一个Post模型）
@@ -34,9 +38,21 @@ class Post(models.Model):
     updated=models.DateTimeField(auto_now=True)
     #帖子的状态
     status=models.CharField(max_length=10,choices=STATUS_CHOICES,default='draft')
+    # The default manager
+    objects=models.Manager()
+    #Our custom manager
+    published=PublishedManager()
+
+    def get_absolute_url(self):
+        return reverse('blog:post_detail',
+                       args=[self.publish.year,
+                             self.publish.month,
+                             self.publish.day,
+                             self.slug])
 
 class Meta:
     ordering=('-publish',)
 
 def __str__(self):
     return self.title
+
